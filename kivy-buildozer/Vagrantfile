@@ -1,0 +1,61 @@
+Vagrant.require_version ">=2.0.0"
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "jrmsdev/debian-stable"
+
+  # buildozer serve (port 8000)
+  config.vm.network "forwarded_port", guest: 8000, host: 8000
+
+  config.vm.provision "bootstrap", type: "shell", inline: <<-SHELL
+    set -e
+    export DEBIAN_FRONTEND=noninteractive
+
+    dpkg --add-architecture i386
+    apt-get update
+
+    apt-get install -y --no-install-recommends \
+                    rsync \
+                    python-kivy \
+                    cython \
+                    default-jdk-headless \
+                    python-pip \
+                    python-setuptools \
+                    python-wheel \
+                    build-essential \
+                    ccache \
+                    git \
+                    libncurses5:i386 \
+                    libstdc++6:i386 \
+                    libgtk2.0-0:i386 \
+                    libpangox-1.0-0:i386 \
+                    libpangoxft-1.0-0:i386 \
+                    libidn11:i386 \
+                    python2.7 \
+                    python2.7-dev \
+                    openjdk-8-jdk \
+                    unzip \
+                    zlib1g-dev \
+                    zlib1g:i386
+
+    apt-get clean
+    apt-get autoremove -y --purge
+
+    rm -rf /var/lib/apt/lists/*
+    rm -f /var/cache/apt/archives/*.deb
+    rm -f /var/cache/apt/*cache.bin
+
+    PIPOPTS='--upgrade --upgrade-strategy only-if-needed'
+
+    pip install $PIPOPTS 'buildozer>=0.33'
+
+    rm -rf ~/.cache/pip
+
+    mkdir -v /build
+    chown -v vagrant:vagrant /build
+
+    rm -vf ~vagrant/.buildozer
+    ln -vs /build ~vagrant/.buildozer
+  SHELL
+
+end
