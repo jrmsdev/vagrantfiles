@@ -39,9 +39,7 @@ Vagrant.configure("2") do |config|
                "zlib1g-dev",
                "zlib1g:i386"]
 
-    config.vm.provision "pipinstall", type: "shell", inline: <<-SHELL
-        PIPOPTS='--upgrade --upgrade-strategy only-if-needed'
-        pip install $PIPOPTS 'buildozer>=0.33'
-        rm -rf ~/.cache/pip
-    SHELL
+    config.vm.provision "pipinstall", type: "shell",
+        path: "../scripts/pip-install.sh",
+        args: ["buildozer>=0.33"]
 end
