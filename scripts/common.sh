@@ -15,7 +15,7 @@ BOX_VERSION=`cat $VERFILE`
 BOX_PROVIDER='virtualbox'
 
 BASE_URL='https://app.vagrantup.com/api/v1'
-CURL_ARGS='-s'
+CURL_ARGS='-sS'
 
 CLOUD_USER=`cat $CREDSFILE | cut -d ' ' -f 1`
 CLOUD_TOKEN=`cat $CREDSFILE | cut -d ' ' -f 2`
