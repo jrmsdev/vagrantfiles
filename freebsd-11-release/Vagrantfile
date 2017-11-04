@@ -1,0 +1,22 @@
+Vagrant.require_version ">=2.0.0"
+
+Vagrant.configure("2") do |config|
+    config.ssh.shell = "/bin/sh"
+
+    config.vm.box = "freebsd/FreeBSD-11.1-RELEASE"
+    config.vm.hostname = "freebsd-11-release"
+
+    config.vm.provider "virtualbox" do |vb|
+        vb.name = "jrmsdev-freebsd-11-release"
+    end
+
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    config.vm.provision "minimize", type: "shell",
+        run: "never",
+        path: "../scripts/freebsd/minimize.sh"
+
+    config.vm.provision "sshauth", type: "shell",
+        run: "never",
+        path: "../scripts/vagrant-sshauth.sh"
+end
