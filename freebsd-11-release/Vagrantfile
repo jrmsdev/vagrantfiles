@@ -12,6 +12,40 @@ Vagrant.configure("2") do |config|
 
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
+    config.vm.provision "bootstrap", type: "shell", run: "never", inline: <<-SHELL
+        set -e
+
+        # fix hostname
+        echo 'hostname="freebsd-11-release"' >/tmp/new.rc.conf
+        grep -vF 'hostname=' /etc/rc.conf >>/tmp/new.rc.conf
+        cat /tmp/new.rc.conf | \
+            grep -vF 'firstboot_' >/etc/rc.conf
+
+        # remove pkgs
+        if pkg origin | grep -F '/firstboot'; then
+            pkg delete -y firstboot-freebsd-update firstboot-pkgs
+        fi
+        pkg autoremove -y
+
+        # fix sudoers
+        echo 'fix sudoers...'
+        echo 'vagrant ALL=(ALL) NOPASSWD: ALL' >/usr/local/etc/sudoers.d/vagrant
+        chmod 0440 /usr/local/etc/sudoers.d/vagrant
+        cat /usr/local/etc/sudoers.dist >/usr/local/etc/sudoers
+
+        # make vagrant an operator (needed to shutdown the box)
+        echo 'add vagrant to operator group...'
+        pw groupmod operator -m vagrant
+    SHELL
+
+    config.vm.provision "dist-upgrade", type: "shell",
+        run: "never",
+        path: "../scripts/freebsd/dist-upgrade.sh"
+
+    config.vm.provision "pkg-upgrade", type: "shell",
+        run: "never",
+        path: "../scripts/freebsd/pkg-upgrade.sh"
+
     config.vm.provision "minimize", type: "shell",
         run: "never",
         path: "../scripts/freebsd/minimize.sh"
