@@ -70,3 +70,8 @@ import: base.box
 	vagrant box add -c -f --provider virtualbox \
 		--name jrmsdev/$(BOX_NAME) \
 		base.box
+
+
+.PHONY: delbox
+delbox:
+	$(SH) $(SCRIPTSD)/cloudbox-delbox.sh

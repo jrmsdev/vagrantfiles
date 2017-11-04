@@ -19,6 +19,6 @@ response=`curl ${CURL_ARGS} --header "${AUTH_HEADER}" ${upurl}`
 
 upload_path=`echo $response | grep -F '"upload_path":' | cut -d ':' -f '2-' | sed 's/"//g' | sed 's/}//g'`
 
-curl --progress-bar --request PUT --upload-file $BOXPKG $upload_path
+curl -v --request PUT --upload-file $BOXPKG $upload_path
 
 exit 0
