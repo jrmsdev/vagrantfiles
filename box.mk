@@ -38,6 +38,7 @@ newbox:
 
 .PHONY: newversion
 newversion:
+	date '+%Y.%m.%d' >version.txt
 	$(SH) $(SCRIPTSD)/cloudbox-newversion.sh
 	$(SH) $(SCRIPTSD)/cloudbox-newprovider.sh
 
