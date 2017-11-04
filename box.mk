@@ -1,48 +1,72 @@
 SH ?= /bin/sh
-SCRIPTSD != realpath ../scripts
+SCRIPTSD := ../scripts
+BOX_NAME != basename `pwd`
+BOX_VERSION != cat version.txt
 
 
 .PHONY: default
-default: .box.up
+default: build
+
+
+.box.build:
+	vagrant up --provision
+	@touch .box.build
+
+
+.PHONY: build
+build: .box.build
 
 
 .PHONY: clean
 clean:
-	@vagrant halt
-	@vagrant destroy
-	@rm -vf package.box .box.*
+	vagrant halt
+	@rm -vf base.box .box.*
 
 
-.PHONY: build
-build: package.box
+.PHONY: distclean
+distclean: clean
+	vagrant destroy
+	@rm -vrf .vagrant
 
 
-.box.up:
-	@vagrant up
-	@touch .box.up
-
-
-package.box: .box.up
-	@rm -vf package.box
-	@vagrant package
-
-
-.PHONY: init
-init:
+.PHONY: newbox
+newbox:
 	$(SH) $(SCRIPTSD)/cloudbox-newbox.sh
 	$(SH) $(SCRIPTSD)/cloudbox-newversion.sh
 	$(SH) $(SCRIPTSD)/cloudbox-newprovider.sh
 
 
-.PHONY: upload
-upload: build
+.PHONY: newversion
+newversion:
+	$(SH) $(SCRIPTSD)/cloudbox-newversion.sh
+	$(SH) $(SCRIPTSD)/cloudbox-newprovider.sh
+
+
+base.box: .box.build
+	@rm -f base.box
+	vagrant package --base jrmsdev-$(BOX_NAME) --output base.box
+
+
+.box.upload: base.box
 	$(SH) $(SCRIPTSD)/cloudbox-upload.sh
 	$(SH) $(SCRIPTSD)/cloudbox-release.sh
+	@touch .box.upload
+
+
+.PHONY: pkg
+pkg: base.box
+
+
+.PHONY: upload
+upload: .box.upload
 
 
 .PHONY: update
-update: build
-	$(SH) $(SCRIPTSD)/cloudbox-newversion.sh
-	$(SH) $(SCRIPTSD)/cloudbox-newprovider.sh
-	$(SH) $(SCRIPTSD)/cloudbox-upload.sh
-	$(SH) $(SCRIPTSD)/cloudbox-release.sh
+update: newversion upload
+
+
+.PHONY: import
+import: base.box
+	vagrant box add -c -f --provider virtualbox \
+		--name jrmsdev/$(BOX_NAME) \
+		base.box
