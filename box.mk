@@ -44,6 +44,7 @@ newversion:
 
 base.box: .box.build
 	@rm -f base.box
+	vagrant provision --provision-with minimize,sshauth
 	vagrant package --base jrmsdev-$(BOX_NAME) --output base.box
 
 
