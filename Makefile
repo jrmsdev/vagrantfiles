@@ -8,24 +8,24 @@ default:
 
 .PHONY: clean
 clean:
-	@for box in $(BOXES); do echo "box: $$box"; $(MAKE) -C $$box clean; done
+	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box clean; done
 
 
 .PHONY: distclean
 distclean:
-	@for box in $(BOXES); do echo "box: $$box"; $(MAKE) -C $$box distclean; done
+	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box distclean; done
 
 
 .PHONY: build
 build:
-	@for box in $(BOXES); do echo "box: $$box"; $(MAKE) -C $$box build; done
+	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box build; done
 
 
 .PHONY: pkg
 pkg:
-	@for box in $(BOXES); do echo "box: $$box"; $(MAKE) -C $$box pkg; done
+	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box pkg; done
 
 
 .PHONY: upload
 upload:
-	@for box in $(BOXES); do echo "box: $$box"; $(MAKE) -C $$box upload; done
+	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box upload; done

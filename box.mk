@@ -75,3 +75,8 @@ import: base.box
 .PHONY: delbox
 delbox:
 	$(SH) $(SCRIPTSD)/cloudbox-delbox.sh
+
+
+.PHONY: reload
+reload:
+	vagrant reload --provision

@@ -11,4 +11,7 @@ Vagrant.configure("2") do |config|
     config.vm.provision "distupgrade", type: "shell",
         path: "../scripts/debian-upgrade.sh",
         args: ["stable", "main"]
+
+    config.vm.provision "sshauth", type: "shell",
+        path: "../scripts/vagrant-sshauth.sh"
 end
