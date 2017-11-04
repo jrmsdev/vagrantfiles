@@ -64,7 +64,8 @@ upload: .box.upload
 
 
 .PHONY: update
-update: newversion upload
+update:
+	@$(MAKE) newversion import upload
 
 
 .PHONY: import

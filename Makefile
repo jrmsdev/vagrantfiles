@@ -1,3 +1,4 @@
+SH ?= /bin/sh
 BOXES != ls */Makefile | xargs dirname
 
 
@@ -29,3 +30,8 @@ pkg:
 .PHONY: upload
 upload:
 	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box upload; done
+
+
+.PHONY: update
+update:
+	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box update; done
