@@ -15,6 +15,6 @@ rm -vf /var/db/pkg/repo-*.sqlite
 pkg update -f
 pkg-static upgrade -y
 
-pkg install -y rsync sudo virtualbox-ose-additions-nox11
+pkg install -y rsync sudo virtualbox-ose-additions-nox11 ca_root_nss
 
 pkg noauto | sort
