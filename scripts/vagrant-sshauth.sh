@@ -8,4 +8,4 @@ else
     wget -q -O ~vagrant/.ssh/authorized_keys ${PUBKEY_URL}
 fi
 
-dh -sh ~vagrant/.ssh/authorized_keys
+du -sh ~vagrant/.ssh/authorized_keys
