@@ -2,7 +2,7 @@
 
 . `dirname $0`/common.sh
 
-BOXPKG=base.box
+BOXPKG=${1:?'box base file?'}
 
 test -s $BOXPKG || {
     echo "${BOXPKG}: file not found!" >&2
