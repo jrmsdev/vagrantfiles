@@ -15,7 +15,10 @@ DEBDOM=deb.debian.org
 CF=/etc/apt/sources.list
 
 echo "deb http://${DEBDOM}/debian ${DEBDIST} ${DEBSUITE}" >${CF}
-echo "deb http://${DEBDOM}/debian-security ${DEBDIST}/updates ${DEBSUITE}" >>${CF}
+
+if test "unstable" != "${DEBDIST}"; then
+    echo "deb http://${DEBDOM}/debian-security ${DEBDIST}/updates ${DEBSUITE}" >>${CF}
+fi
 
 apt-get clean
 apt-get update
