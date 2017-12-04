@@ -120,6 +120,10 @@ stop:
 	vagrant halt
 
 
+.box.ssh-config:
+	@vagrant ssh-config >.box.ssh-config
+
+
 .PHONY: ssh
-ssh:
+ssh: .box.ssh-config
 	vagrant ssh
