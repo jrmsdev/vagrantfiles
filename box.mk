@@ -6,7 +6,26 @@ BOX_BASE := base-$(BOX_VERSION).box
 
 
 .PHONY: default
-default: build
+default: help
+
+
+.PHONY: help
+help:
+	@echo 'TARGETS'
+	@echo '  help       - show this help message (default)'
+	@echo '  clean      - clean build files'
+	@echo '  distclean  - clean and vagrant destroy'
+	@echo '  build      - vagrant up and provision'
+	@echo '  pkg        - vagrant base box package'
+	@echo '  start      - vm start'
+	@echo '  stop       - vm stop'
+	@echo '  reload     - vm reload'
+	@echo '  newbox     - cloud new box'
+	@echo '  newversion - cloud new box version'
+	@echo '  delbox     - cloud delete box'
+	@echo '  upload     - could upload vagrant base box'
+	@echo '  import     - build and import vagrant base box'
+	@echo '  update     - newversion, import and upload box'
 
 
 .box.build:
