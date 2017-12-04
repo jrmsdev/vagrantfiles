@@ -20,6 +20,7 @@ help:
 	@echo '  start      - vm start'
 	@echo '  stop       - vm stop'
 	@echo '  reload     - vm reload'
+	@echo '  ssh        - vagrant ssh'
 	@echo '  newbox     - cloud new box'
 	@echo '  newversion - cloud new box version'
 	@echo '  delbox     - cloud delete box'
@@ -28,14 +29,14 @@ help:
 	@echo '  update     - newversion, import and upload box'
 
 
+.PHONY: build
+build: .box.build
+
+
 .box.build:
 	vagrant up
 	vagrant provision
 	@touch .box.build
-
-
-.PHONY: build
-build: .box.build
 
 
 .PHONY: clean
@@ -117,3 +118,8 @@ start:
 .PHONY: stop
 stop:
 	vagrant halt
+
+
+.PHONY: ssh
+ssh:
+	vagrant ssh
