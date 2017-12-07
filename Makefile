@@ -17,6 +17,11 @@ distclean:
 	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box distclean; done
 
 
+.PHONY: check
+check:
+	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box check; done
+
+
 .PHONY: build
 build:
 	@for box in $(BOXES); do echo "BOX: $$box"; $(MAKE) -C $$box build; done

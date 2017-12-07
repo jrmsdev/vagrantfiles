@@ -120,6 +120,11 @@ stop:
 	vagrant halt
 
 
+.PHONY: check
+check:
+	vagrant validate
+
+
 .box.ssh-config:
 	@vagrant ssh-config >.box.ssh-config
 
