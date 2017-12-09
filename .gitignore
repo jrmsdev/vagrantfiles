@@ -1,4 +1,4 @@
 */.box.*
 */.vagrant/
 */*.log
-*/base.box
+*/base-*.box
