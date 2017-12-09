@@ -2,7 +2,7 @@ Vagrant.require_version ">=2.0.0"
 
 Vagrant.configure("2") do |config|
 
-    config.vm.box = "jrmsdev/debian-stable"
+    config.vm.box = "jrmsdev/debian-testing"
     config.vm.hostname = "kivy-buildozer"
 
     config.vm.provider "virtualbox" do |vb|
@@ -14,44 +14,49 @@ Vagrant.configure("2") do |config|
 
     config.vm.synced_folder ".", "/vagrant", disabled: true
 
-    config.vm.provision "bootstrap", type: "shell", inline: <<-SHELL
-        mkdir -vp /build
-        chown -v vagrant:vagrant /build
-        rm -vf ~vagrant/.buildozer
-        ln -vs /build ~vagrant/.buildozer
-    SHELL
+    config.vm.provision "dist-upgrade", type: "shell",
+        path: "../scripts/debian-upgrade.sh",
+        args: ["testing"]
 
-    config.vm.provision "i386arch", type: "shell",
+    config.vm.provision "dpkg-i386arch", type: "shell",
         inline: "dpkg --add-architecture i386"
 
-    config.vm.provision "debinstall", type: "shell",
+    config.vm.provision "apt-install", type: "shell",
         path: "../scripts/debian-install.sh",
         args: ["rsync",
-               "python-kivy",
-               "cython",
-               "default-jdk-headless",
+               "pkg-config",
+               "autoconf",
+               "automake",
+               "libtool",
+               "python2.7",
+               "python2.7-dev",
+               "openjdk-8-jdk",
                "python-pip",
                "python-setuptools",
                "python-wheel",
                "build-essential",
                "ccache",
                "git",
+               "unzip",
+               "zlib1g-dev",
                "libncurses5:i386",
                "libstdc++6:i386",
                "libgtk2.0-0:i386",
                "libpangox-1.0-0:i386",
                "libpangoxft-1.0-0:i386",
                "libidn11:i386",
-               "python2.7",
-               "python2.7-dev",
-               "openjdk-8-jdk",
-               "unzip",
-               "zlib1g-dev",
                "zlib1g:i386"]
 
-    config.vm.provision "pipinstall", type: "shell",
+    config.vm.provision "pip-install", type: "shell",
         path: "../scripts/pip-install.sh",
-        args: ["buildozer>=0.33"]
+        args: ["Cython==0.25.2", "buildozer>=0.33"]
+
+    config.vm.provision "buildozer-setup", type: "shell", inline: <<-SHELL
+        mkdir -vp /buildozer/bin /buildozer/android/platform /build
+        chown -vR vagrant:vagrant /buildozer /build
+        rm -vf ~vagrant/.buildozer
+        ln -vs /buildozer ~vagrant/.buildozer
+    SHELL
 
     config.vm.provision "minimize", type: "shell",
         run: "never",

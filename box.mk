@@ -35,7 +35,6 @@ build: .box.build
 
 .box.build:
 	vagrant up
-	vagrant provision
 	@touch .box.build
 
 
