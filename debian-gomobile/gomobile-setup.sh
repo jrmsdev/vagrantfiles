@@ -13,7 +13,7 @@ setupSDK() {
     if ! test -s ./tools/bin/sdkmanager; then
         echo "download: $SDK_URL"
         wget -cq $SDK_URL
-        sha256sum -c $SDK_FILE_HASH $SDK_FILE
+        echo "$SDK_FILE_HASH $SDK_FILE" | sha256sum -c
         unzip $SDK_FILE
     fi
     echo y | ./tools/bin/sdkmanager --update
