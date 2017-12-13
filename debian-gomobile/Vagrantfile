@@ -17,7 +17,8 @@ Vagrant.configure("2") do |config|
 
     config.vm.provision "apt-install", type: "shell",
         path: "../scripts/debian-install.sh",
-        args: ["rsync", "wget", "pkg-config", "git", "golang", "gradle"]
+        args: ["rsync", "wget", "pkg-config", "git", "golang", "gradle",
+               "libgles2-mesa-dev"]
 
     config.vm.provision "golang-setup", type: "shell",
         path: "./golang-setup.sh"
